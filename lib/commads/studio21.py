@@ -14,7 +14,7 @@ _HEADERS = {
     'Host': 'studio21.ru',
     'Accept-Language': 'en-RU;q=1.0, ru-RU;q=0.9, uk-UA;q=0.8, de-DE;q=0.7, hi-RU;q=0.6',
     'Accept': '*/*',
-    'User-Agent': 'studio21/2.101.4 (Code-Pilots.Studio21; build:1; iOS 14.7.1) Alamofire/4.8.1',
+    'User-Agent': 'PyDiscordMusicBot',
 }
 
 
