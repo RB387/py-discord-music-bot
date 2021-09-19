@@ -1,0 +1,7 @@
+{
+  "play-song": "Enqueued `{0}` to be played. Position in queue: {1}",
+  "error": "Failed to {0} \nbecause of {1}",
+  "not-connected": "You are not connected to voice channel",
+  "playing-now": "Currently playing: `{0}` -- `{1}`\n\n",
+  "queue-entry": "`{0:<3}` -- `{1}` by `{2}`\n"
+}

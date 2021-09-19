@@ -1,0 +1,30 @@
+language = "en"
+
+[common]
+messages_ttl = "5"
+playlist_queue = "playlist"
+
+[bot]
+command_prefix = "!"
+
+[[bot.queues]]
+name = "playlist"
+
+[ydl]
+format = "bestaudio/best"
+noplaylist = "true"
+source_address = "0.0.0.0"
+default_search = "auto"
+
+[ffmpeg]
+before_options = "-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5 -nostdin"
+options = "-vn"
+
+[logger]
+level = "INFO"
+
+[response]
+colour = 7506394
+footer_img = "https://i.imgur.com/gFHBoZA.png"
+footer_text = "https://github.com/RB387/py-discord-music-bot"
+author_url = "https://github.com/RB387/py-discord-music-bot"
