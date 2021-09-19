@@ -1,18 +1,9 @@
-from asyncio import Lock
 from typing import Type
 
 from lib.core.bot import DiscordBot
 from lib.core.injector import DependencyInjector
 from lib.core.logger import Logger
 from lib.core.router import Router, router as default_router
-
-
-async def _wait_forever():
-    """ just wait forever until loop is not closed """
-    lock = Lock()
-    await lock.acquire()
-    await lock.acquire()
-    print('out')
 
 
 class App:
