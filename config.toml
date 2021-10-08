@@ -1,5 +1,4 @@
-language = "ptts"
-auto_help = 1
+language = "en"
 
 [common]
 messages_ttl = "10"
