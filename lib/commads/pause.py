@@ -15,5 +15,6 @@ class Pause(ClientProtocol):
     messenger: Messenger
 
     async def handle(self, ctx: Context):
+        """ Clear all bot messages """
         await self.messenger.react(ctx, Emoji.PAUSE)
         await self.playlist.pause(ctx)

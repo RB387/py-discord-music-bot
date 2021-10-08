@@ -33,7 +33,7 @@ class Messenger(FileConstructable):
     bot: DiscordBot
 
     @classmethod
-    def from_config(cls, config: Dict[str, Dict], **clients) -> 'Messenger':
+    def __from_config__(cls, config: Dict[str, Dict], **clients) -> 'Messenger':
         response_kwargs = config['response']
         messages_ttl = config['common']['messages_ttl']
 

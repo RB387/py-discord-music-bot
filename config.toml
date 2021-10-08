@@ -1,14 +1,13 @@
-language = "en"
+language = "ptts"
+auto_help = 1
 
 [common]
-messages_ttl = "5"
-playlist_queue = "playlist"
+messages_ttl = "10"
 
 [bot]
 command_prefix = "!"
+disconnect_timeout = 5.0
 
-[[bot.queues]]
-name = "playlist"
 
 [ydl]
 format = "bestaudio/best"

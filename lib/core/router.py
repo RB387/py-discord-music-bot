@@ -1,5 +1,7 @@
 from dataclasses import dataclass, field
 from typing import (
+    Any,
+    Awaitable,
     Callable,
     Generic,
     Iterable,
@@ -11,8 +13,7 @@ from typing import (
 
 
 class HandlerProtocol(Protocol):
-    async def handle(self, *args, **kwargs):
-        ...
+    handle: Callable[[Any], Awaitable[None]]
 
 
 T = TypeVar('T')
@@ -38,6 +39,7 @@ class _Routes:
 
 @dataclass
 class Router:
+    name: str = 'Common'
     _events: List[_EventRoute] = field(default_factory=list)
     _commands: List[_CommandRoute] = field(default_factory=list)
 

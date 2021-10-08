@@ -6,7 +6,8 @@ COPY . ./
 RUN apk update && apk add --no-cache --virtual .build-deps \
   build-base \
   libffi-dev \
-  libsodium-dev
+  libsodium-dev &&
+  apk del .build-deps
 
 # Install dependencies
 RUN apk update && apk add --no-cache \
@@ -19,8 +20,5 @@ RUN apk update && apk add --no-cache \
 
 # Install pip dependencies
 RUN pip3 install --no-cache-dir -r requirements.txt
-
-# Clean up build dependencies
-RUN apk del .build-deps
 
 ENTRYPOINT ["python", "main.py"]

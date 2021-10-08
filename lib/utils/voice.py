@@ -18,6 +18,15 @@ class NotConnectedToVoiceChannel(Exception):
     ...
 
 
+def get_voice_channel_id(ctx: Context):
+    author_voice: VoiceState = ctx.author.voice
+    if author_voice is None:
+        raise NotConnectedToVoiceChannel
+
+    channel: VoiceChannel = author_voice.channel
+    return channel.id
+
+
 async def get_voice_client(ctx: Context, bot: DiscordBot) -> VoiceClient:
     guild: Guild = ctx.guild
 

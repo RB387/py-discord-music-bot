@@ -2,7 +2,7 @@ import toml
 from constants import CONFIG_PATH
 from dotenv import load_dotenv
 
-from lib.app import App
+from lib.core.app import App
 from lib.core.injector import DependencyInjector
 
 

@@ -25,12 +25,13 @@ class Player(FileConstructable):
     messenger: Messenger
 
     @classmethod
-    def from_config(cls, config: Dict[str, Dict], **clients) -> ClientProtocol:
+    def __from_config__(cls, config: Dict[str, Dict], **clients) -> ClientProtocol:
         messages_ttl = int(config['common']['messages_ttl'])
 
         return cls(messages_ttl=messages_ttl, **clients)
 
     async def handle(self, ctx: Context, *args: str):
+        """ Play song or stream """
         url_or_name = ' '.join(args)
         async with ctx.typing():
             try:
@@ -44,7 +45,8 @@ class Player(FileConstructable):
                     delete_after=self.messages_ttl,
                 )
 
-            msg = Message(template_name='play-song', args=(meta.name, self.playlist.size))
+            qsize = await self.playlist.channel_from_context(ctx, self.playlist.size)
+            msg = Message(template_name='play-song', args=(meta.name, qsize))
             await self.messenger.react(ctx, Emoji.OK_HAND)
             await self.messenger.send(
                 ctx=ctx,

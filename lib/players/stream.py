@@ -15,7 +15,7 @@ class StreamPlayer(PlayerProtocol, FileConstructable):
     ffmpeg_opts: Dict[str, str]
 
     @classmethod
-    def from_config(
+    def __from_config__(
         cls, config: Dict[str, Dict], **_: Dict[str, ClientProtocol]
     ) -> ClientProtocol:
         ydl_opts = config.get('ydl', {})
