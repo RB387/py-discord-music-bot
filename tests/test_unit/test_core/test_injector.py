@@ -12,7 +12,7 @@ class ClientFromFile(FileConstructable):
     value: int
 
     @classmethod
-    def from_config(cls, config: Dict[str, Dict], **clients):
+    def __from_config__(cls, config: Dict[str, Dict], **clients):
         return cls(value=config['common']['value'])
 
 

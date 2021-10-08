@@ -23,7 +23,7 @@ class ClientProtocol(Protocol):
 @runtime_checkable
 class FileConstructable(ClientProtocol, Protocol):
     @classmethod
-    def from_config(
+    def __from_config__(
         cls, config: Dict[str, Dict], **clients: Dict[str, 'ClientProtocol']
     ) -> 'ClientProtocol':
         ...
@@ -64,7 +64,7 @@ class DependencyInjector:
             clients[name] = instance
 
         if issubclass(cls, FileConstructable):
-            self._deps[cls] = cls.from_config(self.config, **clients)
+            self._deps[cls] = cls.__from_config__(self.config, **clients)
         else:
             self._deps[cls] = cls(**clients)  # type: ignore
 

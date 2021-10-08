@@ -12,7 +12,7 @@ class TemplateStorage(FileConstructable):
     templates: Dict[str, str]
 
     @classmethod
-    def from_config(
+    def __from_config__(
         cls, config: Dict[str, Dict], **clients: Dict[str, ClientProtocol]
     ) -> ClientProtocol:
         language = config['language']

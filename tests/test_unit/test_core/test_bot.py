@@ -20,10 +20,10 @@ async def test_consume_tasks(bot: DiscordBot):
 
     await bot.__connect__()
 
-    await bot.add_task('test_queue', _task)
+    await bot.queue_task('test_queue', _task)
     assert bot.qsize('test_queue') == 1
 
-    await bot.add_task('test_queue', _task)
+    await bot.queue_task('test_queue', _task)
     assert bot.qsize('test_queue') == 2
 
     lock.release()

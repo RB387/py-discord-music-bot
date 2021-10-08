@@ -12,7 +12,7 @@ class Logger(FileConstructable):
     log: logging.Logger = logging.root
 
     @classmethod
-    def from_config(
+    def __from_config__(
         cls, config: Dict[str, Dict], **clients: Dict[str, ClientProtocol]
     ) -> ClientProtocol:
         kwargs = config.get(cls.CONFIG_NAME, {})

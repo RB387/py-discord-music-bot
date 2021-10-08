@@ -15,5 +15,6 @@ class Resume(ClientProtocol):
     messenger: Messenger
 
     async def handle(self, ctx: Context):
+        """ Resume song """
         await self.messenger.react(ctx, Emoji.RESUME)
         await self.playlist.resume(ctx)

@@ -8,13 +8,15 @@ from discord import (
 )
 
 from lib.core import ClientProtocol, router
+from lib.playlist import Playlist
 
 
 @router.event('on_voice_state_update')
 @dataclass
 class OnVoiceUpdateHandler(ClientProtocol):
-    @staticmethod
-    async def handle(member: Member, _: VoiceState, __: VoiceState):
+    playlist: Playlist
+
+    async def handle(self, member: Member, _: VoiceState, __: VoiceState):
         guild: Guild = member.guild
 
         voice: VoiceClient = guild.voice_client
@@ -22,6 +24,8 @@ class OnVoiceUpdateHandler(ClientProtocol):
             # bot is not connected to voice channel
             return
 
-        if len(voice.channel.members) == 1:
+        if len(voice.channel.voice_states) == 1:
+            # voice states, because some members can be incognito
             # only bot left
+            await self.playlist.clear(voice.channel.id)
             await voice.disconnect()

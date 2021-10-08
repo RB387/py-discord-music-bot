@@ -16,6 +16,8 @@ class MessageCleaner(ClientProtocol):
     bot: DiscordBot
 
     async def handle(self, ctx: Context):
+        """ Clear all bot messages """
+
         def check(message: Message):
             return message.author == self.bot.user
 
