@@ -35,6 +35,9 @@ class DiscordBot(BaseBot, FileConstructable):
         self._disconnect_timeout = disconnect_timeout
         self._consumers: List[asyncio.Task] = []
 
+        self.on_startup: List[Callable] = []
+        self.on_shutdown: List[Callable] = []
+
     @classmethod
     def __from_config__(cls, config: Dict[str, Dict], **clients) -> ClientProtocol:
         kwargs: Dict[str, Any] = config.get(cls.CONFIG_NAME, {})
@@ -44,13 +47,22 @@ class DiscordBot(BaseBot, FileConstructable):
         for consumer in self._consumers:
             consumer.cancel()
 
-        await asyncio.wait(self._consumers, timeout=self._disconnect_timeout)
+        if self._consumers:
+            await asyncio.wait(self._consumers, timeout=self._disconnect_timeout)
 
     def run(self, token: Optional[str] = None, **kwargs):
         if not token:
             token = os.environ['DISCORD_TOKEN']
 
         super().run(token, **kwargs)
+
+    async def start(self, *args, **kwargs):
+        await self._do_startup()
+
+        try:
+            await super().start(*args, **kwargs)
+        finally:
+            await self._do_shutdown()
 
     async def queue_task(self, queue_name: str, task: Callable[[], Awaitable]) -> int:
         if queue_name not in self._queues:
@@ -74,6 +86,23 @@ class DiscordBot(BaseBot, FileConstructable):
         if q:
             q.clear_queue()
 
+    async def _do_startup(self):
+        for handler in self.on_startup:
+            if asyncio.iscoroutinefunction(handler):
+                await handler()
+            else:
+                handler()
+
+    async def _do_shutdown(self):
+        for handler in self.on_shutdown:
+            try:
+                if asyncio.iscoroutinefunction(handler):
+                    await handler()
+                else:
+                    handler()
+            except Exception:
+                self._logger.exception('Failed to execute on shutdown handler')
+
     async def _consume_queue(self, q: Queue):
         async def _consume():
             while self.loop.is_running():
@@ -85,6 +114,8 @@ class DiscordBot(BaseBot, FileConstructable):
                     self._logger.exception('Failed to execute task')
 
                 q.task_done()
+
+            self._logger.info('Finished consuming')
 
         consumer = asyncio.create_task(_consume())
         self._consumers.append(consumer)
