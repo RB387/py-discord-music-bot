@@ -21,8 +21,8 @@ class App:
     def run(self):
         self._setup_routes()
 
-        self._bot.listen('on_connect')(self._injector.connect)
-        self._bot.listen('on_disconnect')(self._injector.disconnect)
+        self._bot.on_startup.append(self._injector.connect)
+        self._bot.on_shutdown.append(self._injector.disconnect)
 
         self._logger.info('Running bot...')
         self._bot.run()
