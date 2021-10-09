@@ -3,5 +3,7 @@
   "error": "Failed to {0} \nbecause of {1}",
   "not-connected": "You are not connected to voice channel",
   "playing-now": "Currently playing: `{0}` -- `{1}`\n\n",
-  "queue-entry": "`{0:<3}` -- `{1}` by `{2}`\n"
+  "queue-entry": "`{0:<3}` -- `{1}` by `{2}`\n",
+  "loop-enabled": "Now looping the queue",
+  "loop-disabled": "Queue loop disabled"
 }
