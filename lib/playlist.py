@@ -34,12 +34,17 @@ def _playlist_factory():
     return defaultdict(list)
 
 
+def _loop_factory():
+    return defaultdict(bool)
+
+
 @dataclass
 class Playlist(ClientProtocol):
     player: ComposePlayer
     logger: Logger
     bot: DiscordBot
     messenger: Messenger
+    _qloops: Dict[int, bool] = field(init=False, default_factory=_loop_factory)
     _lock: Lock = field(init=False, default_factory=Lock)
     _playlist: Dict[int, List[AudioMeta]] = field(init=False, default_factory=_playlist_factory)
 
@@ -62,6 +67,9 @@ class Playlist(ClientProtocol):
             try:
                 audio = await self.player.get_audio(meta)
                 await wait_play(voice, audio)
+
+                if self.get_loop_status(channel_id):
+                    await self._add_task(channel_id, meta, _play)
             except Exception as exc:
                 self.logger.exception('Failed to play audio')
                 msg = Message(
@@ -77,11 +85,7 @@ class Playlist(ClientProtocol):
                 async with self._lock:
                     self._playlist[channel_id].pop(0)
 
-        async with self._lock:
-            qname = self._get_queue_name(channel_id)
-            await self.bot.queue_task(qname, _play)
-            self._playlist[channel_id].append(meta)
-
+        await self._add_task(channel_id, meta, _play)
         return meta
 
     async def skip(self, ctx: Context):
@@ -95,6 +99,13 @@ class Playlist(ClientProtocol):
     async def resume(self, ctx: Context):
         voice = await get_voice_client(ctx, self.bot)
         voice.resume()
+
+    def loop(self, channel_id: int) -> bool:
+        self._qloops[channel_id] = not self._qloops[channel_id]
+        return self._qloops[channel_id]
+
+    def get_loop_status(self, channel_id: int) -> bool:
+        return self._qloops[channel_id]
 
     def list(self, channel_id: int) -> Iterable[AudioMeta]:
         return tuple(self._playlist[channel_id])
@@ -118,3 +129,9 @@ class Playlist(ClientProtocol):
     @staticmethod
     def _get_queue_name(channel_id: int) -> str:
         return f'playlist:{channel_id}'
+
+    async def _add_task(self, channel_id: int, meta: AudioMeta, task: Callable[[], Awaitable]):
+        async with self._lock:
+            qname = self._get_queue_name(channel_id)
+            await self.bot.queue_task(qname, task)
+            self._playlist[channel_id].append(meta)
