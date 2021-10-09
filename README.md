@@ -3,6 +3,7 @@ Easy to extend and support
 
 ![Bot play](https://raw.githubusercontent.com/RB387/py-discord-music-bot/master/.git_images/play.png)
 
+
 ## Supported commands
 ```
 !play [url or name] - play song from any stream/video or youtube search
