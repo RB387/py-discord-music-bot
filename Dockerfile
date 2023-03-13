@@ -2,6 +2,8 @@ FROM python:3.8-alpine
 
 COPY requirements.txt requirements.txt
 
+RUN apk add --no-cache git
+
 # Install
 # 1. build dependencies
 # 2. dependencies
