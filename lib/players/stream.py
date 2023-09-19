@@ -3,7 +3,7 @@ from typing import Dict
 
 import discord
 from discord import FFmpegOpusAudio
-from youtube_dl import YoutubeDL
+from yt_dlp import YoutubeDL
 
 from lib.core.injector import ClientProtocol, FileConstructable
 from lib.players.protocol import AudioMeta, PlayerProtocol

@@ -6,6 +6,7 @@ messages_ttl = 10
 [bot]
 command_prefix = "!"
 disconnect_timeout = 5.0
+intents = "all"
 
 
 [ydl]

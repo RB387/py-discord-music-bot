@@ -1,6 +1,6 @@
 import discord
 from discord import FFmpegOpusAudio
-from youtube_dl import YoutubeDL
+from yt_dlp import YoutubeDL
 
 from lib.players.protocol import AudioMeta
 from lib.players.stream import StreamPlayer

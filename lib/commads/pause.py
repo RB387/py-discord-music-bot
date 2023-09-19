@@ -14,7 +14,7 @@ class Pause(ClientProtocol):
     playlist: Playlist
     messenger: Messenger
 
-    async def handle(self, ctx: Context):
+    async def handle(self, ctx: Context, *args):
         """ Pause current song """
         await self.messenger.react(ctx, Emoji.PAUSE)
         await self.playlist.pause(ctx)

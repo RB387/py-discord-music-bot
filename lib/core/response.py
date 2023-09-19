@@ -22,7 +22,7 @@ class Response:
         embed.set_author(
             name=self.user.name,
             url=self.author_url,
-            icon_url=self.user.avatar_url,
+            icon_url=self.user.avatar.url,
         )
 
         return embed

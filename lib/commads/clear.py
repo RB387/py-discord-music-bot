@@ -14,7 +14,7 @@ class PlaylistCleaner(ClientProtocol):
     playlist: Playlist
     messenger: Messenger
 
-    async def handle(self, ctx: Context):
+    async def handle(self, ctx: Context, *args):
         """ Clear player queue """
         await self.messenger.react(ctx, Emoji.OK_HAND)
         await self.playlist.channel_from_context(ctx, self.playlist.clear)

@@ -14,7 +14,7 @@ class Skip(ClientProtocol):
     playlist: Playlist
     messenger: Messenger
 
-    async def handle(self, ctx: Context):
+    async def handle(self, ctx: Context, *args):
         """ Skip current song """
         await self.messenger.react(ctx, Emoji.SKIP)
         await self.playlist.skip(ctx)

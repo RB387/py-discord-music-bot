@@ -10,10 +10,17 @@ from typing import (
     Optional,
 )
 
+from discord import Client, Intents
 from discord.ext.commands import Bot as BaseBot
 
 from lib.core.injector import ClientProtocol, FileConstructable
 from lib.core.logger import Logger
+
+INTENTS = {
+    "all": Intents.all(),
+    "default": Intents.default(),
+    "none": Intents.none(),
+}
 
 
 class Queue(BaseQueue):
@@ -26,8 +33,9 @@ class Queue(BaseQueue):
 class DiscordBot(BaseBot, FileConstructable):
     CONFIG_NAME = 'bot'
 
-    def __init__(self, *args, logger: Logger, disconnect_timeout: float = 5.0, **kwargs):
-        super().__init__(*args, **kwargs)
+    def __init__(self, *args, logger: Logger, disconnect_timeout: float = 5.0, intents: Intents, **kwargs):
+        Client.__init__(self, **kwargs, intents=intents)
+        super().__init__(*args, **kwargs, intents=intents)
 
         self._queues: Dict[str, Queue] = {}
         self._logger = logger
@@ -41,7 +49,8 @@ class DiscordBot(BaseBot, FileConstructable):
     @classmethod
     def __from_config__(cls, config: Dict[str, Dict], **clients) -> ClientProtocol:
         kwargs: Dict[str, Any] = config.get(cls.CONFIG_NAME, {})
-        return cls(**kwargs, **clients)
+        intents = kwargs.pop("intents", None) or "default"
+        return cls(**kwargs, intents=INTENTS[intents], **clients)
 
     async def __disconnect__(self):
         for consumer in self._consumers:

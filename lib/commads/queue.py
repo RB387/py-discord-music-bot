@@ -14,7 +14,7 @@ class QueueStatus(ClientProtocol):
     playlist: Playlist
     messenger: Messenger
 
-    async def handle(self, ctx: Context):
+    async def handle(self, ctx: Context, *args):
         """ Get current player queue """
         try:
             playlist = await self.get_playlist(ctx)

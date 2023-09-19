@@ -30,9 +30,9 @@ class Player(FileConstructable):
 
         return cls(messages_ttl=messages_ttl, **clients)
 
-    async def handle(self, ctx: Context, *args: str):
+    async def handle(self, ctx: Context, url_or_name: str, *args: str):
         """ Play song or stream """
-        url_or_name = ' '.join(args)
+        url_or_name = ' '.join([url_or_name, *args])
         async with ctx.typing():
             try:
                 meta = await self.playlist.add(ctx, url_or_name)

@@ -14,7 +14,7 @@ class LoopQueue(ClientProtocol):
     playlist: Playlist
     messenger: Messenger
 
-    async def handle(self, ctx: Context):
+    async def handle(self, ctx: Context, *args):
         """ Loop player queue """
         looped = await self.playlist.channel_from_context(ctx, self.playlist.loop)
         await self.messenger.react(ctx, Emoji.OK_HAND)

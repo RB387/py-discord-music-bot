@@ -20,11 +20,11 @@ _HEADERS = {
 
 @router.command('21queue')
 class Studio21QueueStatus(QueueStatus):
-    async def handle(self, ctx: Context):
+    async def handle(self, ctx: Context, *args):
         """ Get Studio21 playlist """
-        return await super().handle(ctx)
+        return await super().handle(ctx, *args)
 
-    async def get_playlist(self, ctx: Context):
+    async def get_playlist(self, ctx: Context, *args):
         meta = []
 
         async with aiohttp.ClientSession(headers=_HEADERS) as session:
@@ -53,6 +53,6 @@ class Studio21QueueStatus(QueueStatus):
 class Studio21Player(ClientProtocol):
     player: Player
 
-    async def handle(self, ctx: Context):
+    async def handle(self, ctx: Context, *args):
         """ Play radio studio21 """
         return await self.player.handle(ctx, STUDIO_21_URL)

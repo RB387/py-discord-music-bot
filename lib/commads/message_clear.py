@@ -15,7 +15,7 @@ from lib.core import (
 class MessageCleaner(ClientProtocol):
     bot: DiscordBot
 
-    async def handle(self, ctx: Context):
+    async def handle(self, ctx: Context, *args):
         """ Clear all bot messages """
 
         def check(message: Message):
