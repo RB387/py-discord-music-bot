@@ -32,7 +32,7 @@ class StreamPlayer(PlayerProtocol, FileConstructable):
     async def get_info(self, url: str) -> AudioMeta:
         with YoutubeDL(self.ydl_opts) as ydl:
             info = ydl.extract_info(str(url), download=False)
-            video_info = info['formats'][0]
+            video_info = _find_video_info(info)
 
             return AudioMeta(
                 author=info.get('uploader', 'Unknown'),
@@ -40,3 +40,11 @@ class StreamPlayer(PlayerProtocol, FileConstructable):
                 name=info['title'],
                 original_url=url,
             )
+
+
+def _find_video_info(info: dict) -> dict:
+    for video_format in info['formats']:
+        if video_format.get('audio_ext', 'none') != 'none':
+            return video_format
+
+    raise ValueError('No audio format found')
